@@ -63,8 +63,12 @@ namespace Simple_Product_Management_System.Controllers
             productDTO.Id = id;
             var result = await _productService.Update(productDTO);
             if (!result) return NotFound();
+            var productExists = await _productService.GetByID(id);
+            if (productExists == null) return NotFound();
 
-            return NoContent();
+            return Ok(productExists);
+         
+
         }
 
         [HttpDelete("{id}")]
@@ -73,7 +77,7 @@ namespace Simple_Product_Management_System.Controllers
             var result = await _productService.Delete(id);
             if (!result) return NotFound();
 
-            return NoContent();
+            return Ok();
         }
 
         [HttpGet("search")]
